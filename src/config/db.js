@@ -5,11 +5,11 @@ require('dotenv').config();
 const config = {
   user: process.env.DB_USER,
   password: process.env.DB_PASS,
-  server: process.env.DB_HOST, // e.g. 'localhost' or 'ETHAN\\SQLEXPRESS'
+  server: process.env.DB_HOST,
   database: process.env.DB_NAME,
   port: parseInt(process.env.DB_PORT),
   options: {
-    encrypt: false, // Set to true if you're using Azure
+    encrypt: false, 
     trustServerCertificate: true,
   },
 };

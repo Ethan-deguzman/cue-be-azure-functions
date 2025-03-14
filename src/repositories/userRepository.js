@@ -1,5 +1,6 @@
 // repositories/userRepository.js
 const sql = require('../config/db');
+const { mapUsers } = require('../models/userModel');
 
 async function getAllUsers() {
   const query = `
@@ -18,36 +19,11 @@ async function getAllUsers() {
   `;
   try {
     const result = await sql.query(query);
-    const rows = result.recordset;
-
-    // group rows by user
-    const userMap = new Map();
-    rows.forEach(row => {
-      if (!userMap.has(row.userId)) {
-        userMap.set(row.userId, {
-          userId: row.userId,
-          firstname: row.firstname,
-          lastname: row.lastname,
-          customers: [],
-        });
-      }
-      if (row.customerId) {
-        userMap.get(row.userId).customers.push({
-          customerId: row.customerId,
-          customerName: row.customerName,
-          role: {
-            roleId: row.roleId,
-            roleName: row.roleName,
-          },
-        });
-      }
-    });
-
-    return Array.from(userMap.values());
-  } catch (error) {
+    return mapUsers(result.recordset);
+} catch (error) {
     console.error('Query error:', error);
     throw error;
-  }
+}
 }
 
 module.exports = { getAllUsers };
